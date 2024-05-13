@@ -92,22 +92,16 @@ const updateJoke = (req, res) => {
 
     const jsonBody = JSON.parse(bodyBuffer);
 
-    const updatedDb = db.map(joke=>{
-      if(+joke.id===jokeId){
-        return {
-          ...joke,
-          ...jsonBody
-        }
-      }else{
-        return joke
-      }
-    })
+    const index = db.findIndex(joke => +joke.id === jokeId);
 
-    db = updatedDb;
+    if (index !== -1) {
 
+      db[index] = { ...db[index], ...jsonBody };
       res.end(
-        JSON.stringify({ data: db, message: "Jokes Updated Successfully" })
+        JSON.stringify({ data: db[index], message: "Jokes Updated Successfully" })
       );
+    } 
+
     });
   
 
